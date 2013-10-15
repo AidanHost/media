@@ -1,0 +1,85 @@
+﻿@model List<Media.Models.MovieData>
+
+@{
+    ViewBag.Title = "Movies";
+}
+
+<header>
+    <h1>Movies</h1>
+</header>
+
+<a href="/"><span class="choose">&lt; Back</span></a>
+
+<div id="main-content">
+    @if (!ViewBag.Minimal)
+    {
+        if (ViewBag.Page > 1)
+        {
+            <a href="/movies?page=@(ViewBag.Page - 1)">Previous</a>
+        }
+        <span>Page @ViewBag.Page of @ViewBag.Pages</span>
+        if (ViewBag.Page + 1 <= ViewBag.Pages)
+        {
+            <a href="/movies?page=@(ViewBag.Page + 1)">Next</a>
+        }
+        <br />
+        <a href="/movies?page=@(ViewBag.Page)&minimal=true">Show Minimal list (no posters, no ratings, quicker loading)</a>
+        <br />
+        <br />
+        <table class="parent">
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>Poster</th>
+                <th>Rating</th>
+                <th>Year</th>
+            </tr>
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>
+                        <a target="_blank" href="@movie.Url">@movie.Name</a>
+                    </td>
+                    <td>
+                        <img style="max-height: 100px;" src="@movie.Poster" />
+                    </td>
+                    <td>
+                        @movie.Rating / 10
+                    </td>
+                    <td>
+                        @movie.Year
+                    </td>
+                </tr>
+
+
+            }
+        </table>
+    }
+    else
+    {
+        if (ViewBag.Page > 1)
+        {
+            <a href="/movies?page=@(ViewBag.Page - 1)&minimal=true">Previous</a>
+        }
+        <span>Page @ViewBag.Page of @ViewBag.Pages</span>
+        if (ViewBag.Page + 1 <= ViewBag.Pages)
+        {
+            <a href="/movies?page=@(ViewBag.Page + 1)&minimal=true">Next</a>
+        }
+        <br />
+        <a href="/movies?page=@(ViewBag.Page)">Show full list (posters, ratings, slower loading)</a>
+        <br />
+        <br />
+        <table class="parent">
+            @foreach (var movie in Model)
+            {
+                <tr>
+                    <td>
+                        <a target="_blank" href="@movie.Url">@movie.Name</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>

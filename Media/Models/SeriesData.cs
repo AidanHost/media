@@ -99,7 +99,7 @@ namespace Media.Models
                             if (!File.Exists(posterFile))
                                 new WebClient().DownloadFile(posterUrl, posterFile);
 
-                            Poster = "\\Images\\Posters\\Series\\" + imdbId + ".jpg";
+                            Poster = "/Images/Posters/Series/" + imdbId + ".jpg";
                         }
                         else
                         {

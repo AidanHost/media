@@ -13,19 +13,28 @@ namespace Media.Models
         public string Name { get; set; }
         public string Url { get; set; }
         public string Poster { get; set; }
-        public decimal Rating { get; set; }
+        public string Rating { get; set; }
+        public string Year { get; set; }
 
-        public MovieData(string name)
+        public MovieData()
         {
-            Name = name;
+            
+        }
 
+        public MovieData(string imdbId)
+        {
+            Name = "";
             Url = "";
             Poster = "";
-            Rating = 0;
+            Rating = "0";
+            Year = "0";
 
-            // Call to IMDB api
+            ApiCall(imdbId);
+        }
 
-            var request = WebRequest.Create("http://imdbapi.org/?title=" + name);
+        public void ApiCall(string imdbId)
+        {
+            var request = WebRequest.Create(String.Format("http://www.omdbapi.com/?i={0}", imdbId));
             request.ContentType = "application/json; charset=utf-8";
 
             //get response-stream, and use a streamReader to read the content
@@ -37,11 +46,31 @@ namespace Media.Models
 
                     var dictionary = Json.Decode(jsonData);
 
-                    if (dictionary[0] != null)
+                    if (dictionary != null)
                     {
-                        Url = (string) dictionary[0]["imdb_url"];
-                        Poster = (string) dictionary[0]["poster"];
-                        Rating = (decimal) dictionary[0]["rating"];
+                        Name = (string)dictionary["Title"];
+                        Url = String.Format("http://www.imdb.com/title/{0}", imdbId);
+                        Rating = (string)dictionary["imdbRating"];
+                        Year = (string)dictionary["Year"];
+
+                        // save poster
+                        var posterUrl = (string)dictionary["Poster"];
+
+                        if (posterUrl != "N/A")
+                        {
+                            var posterFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images\\Posters\\Movies\\" + imdbId + ".jpg");
+
+                            if (!File.Exists(posterFile))
+                                new WebClient().DownloadFile(posterUrl, posterFile);
+
+                            Poster = "/Images/Posters/Movies/" + imdbId + ".jpg";
+                        }
+                        else
+                        {
+                            Poster = "";
+                        }
+
+
                     }
                 }
             }

@@ -263,6 +263,10 @@ footer {
     }
 }
 
+table.parent {
+    width: 100%;
+}
+
 table.parent>tbody>tr>td {
     border-bottom-color: #333333;
     border-bottom-style: solid;
@@ -271,4 +275,12 @@ table.parent>tbody>tr>td {
 
 table th, table td {
     padding-right: 20px;
+}
+
+.choose {
+    min-height: 40px;
+    min-width: 100px;
+    background-color: #00bfff;
+    display: inline-block;
+    text-align: center;
 }

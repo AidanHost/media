@@ -1,0 +1,58 @@
+﻿@model Media.Models.DataModel
+
+@{
+    ViewBag.Title = "Series";
+}
+
+<header>
+    <h1>Series</h1>
+</header>
+
+<a href="/"><span class="choose">&lt; Back</span></a>
+
+<div id="main-content">
+    <table class="parent">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>Poster</th>
+            <th>Rating</th>
+            <th>Year</th>
+            <th>Season - Episode Count</th>
+        </tr>
+        @foreach (var item in Model.Series)
+        {
+            if (!string.IsNullOrEmpty(item.Name))
+            {
+                <tr>
+                    <td>
+                        <a target="_blank" href="@item.Url">@WebUtility.HtmlDecode(item.Name)</a>
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Poster))
+                        {
+                            <img style="max-height: 100px;" src="@item.Poster" />
+                        }
+                        else
+                        {
+                            <img src="http://i.media-imdb.com/images/SFaa265aa19162c9e4f3781fbae59f856d/nopicture/medium/film.png" style="max-height: 100px;"/>
+                        }
+                    </td>
+                    <td>@item.Rating / 10</td>
+                    <td>@item.Year</td>
+                    <td>
+                        <table>
+                            @foreach (var Season in item.Seasons)
+                            {
+                                <tr>
+                                    <td>@Season.Name - @Season.EpisodeCount</td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

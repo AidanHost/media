@@ -14,9 +14,21 @@ namespace Media
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                "Series",
+                "series",
+                new { controller = "Home", action = "Series" }
+            );
+
+            routes.MapRoute(
+                "Movies",
+                "movies",
+                new { controller = "Home", action = "Movies" }
+            );
+
+            routes.MapRoute(
+                "Default",
+                "{controller}/{action}/{id}",
+                new {controller = "Home", action = "Index", id = UrlParameter.Optional}
             );
         }
     }
